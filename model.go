@@ -1,13 +1,13 @@
 package main
 
 type config struct {
-	Routes []*routes `yaml:"routes"`
+	Routes []*routes `yaml:"routes" validate:"gte=1,dive"`
 }
 
 type routes struct {
-	Url        string              `yaml:"url"`
-	Method     string              `yaml:"method"`
-	StatusCode int                 `yaml:"status_code"`
+	Url        string              `yaml:"url" validate:"required"`
+	Method     string              `yaml:"method" validate:"required"`
+	StatusCode int                 `yaml:"status_code" validate:"required"`
 	Response   []map[string]string `yaml:"response"`
 	Auth       *auth               `yaml:"auth"`
 }
@@ -19,8 +19,8 @@ type auth struct {
 }
 
 type authBasic struct {
-	Username string `yaml:"username"`
-	Password string `yaml:"password"`
+	Username string `yaml:"username" validate:"required"`
+	Password string `yaml:"password" validate:"required"`
 }
 
 type authBearerToken struct {
