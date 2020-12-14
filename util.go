@@ -8,8 +8,8 @@ import (
 	"io/ioutil"
 )
 
-func getRouteConfig(paths []string) ([]config, error) {
-	var configs []config
+func getRouteConfig(paths []string) ([]*config, error) {
+	var configs []*config
 
 	for _, path := range paths {
 		fileBytes, err := ioutil.ReadFile(path)
@@ -28,7 +28,7 @@ func getRouteConfig(paths []string) ([]config, error) {
 			return nil, err
 		}
 
-		configs = append(configs, c)
+		configs = append(configs, &c)
 	}
 
 	return configs, nil

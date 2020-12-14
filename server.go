@@ -1,32 +1,47 @@
 package main
 
 import (
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
+var routeConfigMap map[string]*route
+
 func serve(paths ...string) {
-	r := mux.NewRouter()
-	r.Use(loggingMiddleware)
 	routeConfig, err := getRouteConfig(paths)
 	if err != nil {
 		log.Println(err.Error())
 		return
 	}
 
-	setRoutes(routeConfig, r)
+	setRoutes(routeConfig)
 
-	_ = http.ListenAndServe(":8080", r)
+	http.HandleFunc("/", handleAll)
+	_ = http.ListenAndServe(":8080", nil)
 }
 
-func setRoutes(configs []config, r *mux.Router) {
+func handleAll(w http.ResponseWriter, req *http.Request) {
+	if _, ok := routeConfigMap[getRouteMapKey(req.Method, req.URL.Path)]; !ok {
+		http.Error(w, "Not found", http.StatusNotFound)
+	}
+
+	r := routeConfigMap[getRouteMapKey(req.Method, req.URL.Path)]
+
+	checkAuthorization(w, req, r)
+}
+
+func setRoutes(configs []*config) {
+	configMap := make(map[string]*route)
+
 	for _, c := range configs {
-		for _, route := range c.Routes {
-			r.HandleFunc(route.Url, func(w http.ResponseWriter, r *http.Request) {
-				checkAuthorization(w, r, route)
-			}).Methods(route.Method)
-			log.Printf("added route: %s %s\n", route.Method, route.Url)
+		for _, r := range c.Routes {
+			configMap[getRouteMapKey(r.Method, r.Url)] = r
 		}
 	}
+
+	routeConfigMap = configMap
+}
+
+func getRouteMapKey(method string, url string) string {
+	return method + "::" + url
 }
