@@ -1,5 +1,6 @@
 # Embeddable Service Mocking Engine (ESME)
-ESME allows you to define destination services in `yaml` format.    
+ESME allows you to define the destination mock services in `yaml` format. These 
+services can then simply be consumed by test cases to get the expected behaviour. 
 ## Usage
 Here is a sample `route-config.yml` file that can be processed by ESME
 ```yaml
