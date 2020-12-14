@@ -38,3 +38,8 @@ routes:
       custom:
         my_header: value
 ```
+Let's break down this file to understand what each component means.
+## Routes
+`routes` contains all the routes which need to be mocked. ESME supports adding 
+routes to multiple files which can represent different services running 
+simultaneously.
