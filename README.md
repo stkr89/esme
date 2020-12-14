@@ -1,7 +1,7 @@
 # Embeddable Service Mocking Engine (ESME)
 ESME allows you to define destination services in `yaml` format.    
 ## Usage
-Sample route config file
+Here is a sample `route-config.yml` file that can be processed by ESME
 ```yaml
 routes:
   - url: /users/1
