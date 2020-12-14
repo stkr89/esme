@@ -12,13 +12,15 @@ const (
 	CustomHeaderError             = "custom header(s) is invalid"
 )
 
-func checkAuthorization(w http.ResponseWriter, r *http.Request, route *route) {
+func checkAuthorization(r *http.Request, route *route) (string, int) {
 	for _, f := range getAuthCheckers() {
 		errStr, statusCode := f(r, route)
 		if errStr != "" {
-			http.Error(w, errStr, statusCode)
+			return errStr, statusCode
 		}
 	}
+
+	return "", 0
 }
 
 func getAuthCheckers() []func(r *http.Request, route *route) (string, int) {
