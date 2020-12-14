@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -9,17 +10,36 @@ import (
 
 var routeConfigMap map[string]*route
 
-func serve(paths ...string) {
+func serve(port string, paths ...string) {
 	routeConfig, err := getRouteConfig(paths)
 	if err != nil {
 		log.Println(err.Error())
-		return
 	}
 
 	setRoutes(routeConfig)
+	launchServer(port)
+}
 
-	http.HandleFunc("/", handleAll)
-	_ = http.ListenAndServe(":8080", nil)
+func launchServer(port string) {
+	m := http.NewServeMux()
+	s := http.Server{Addr: ":" + port, Handler: m}
+
+	m.HandleFunc("/", handleAll)
+	m.HandleFunc("/shutdown", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("OK"))
+		go func() {
+			log.Println("shutting down ESME server on port " + port)
+			if err := s.Shutdown(context.Background()); err != nil {
+				log.Println(err)
+			}
+		}()
+	})
+
+	log.Println("starting ESME server on port " + port)
+
+	if err := s.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		log.Println(err)
+	}
 }
 
 func handleAll(w http.ResponseWriter, req *http.Request) {
