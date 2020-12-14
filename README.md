@@ -1,5 +1,5 @@
 # Embeddable Service Mocking Engine (ESME)
-
+ESME allows you to define destination services in `yaml` format.    
 Sample route config file
 ```yaml
 routes:
@@ -27,29 +27,12 @@ routes:
       - firstName: foo
         lastName: bar
     auth:
-      basic:
-        username: username
-        password: password
-  - url: /user
-    method: PUT
-    status_code: 201
-    body:
-      firstName: Foo
-      lastName: Bar
-    response:
-      - firstName: Foo
-        lastName: Bar
-    auth:
-      basic:
-        username: username
-        password: password
+      bearer_token:
+        token: token
   - url: /user/1
     method: DELETE
     status_code: 200
     auth:
-      basic:
-        username: username
-        password: password
-
-
+      custom:
+        my_header: value
 ```
