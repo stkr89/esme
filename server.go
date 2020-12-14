@@ -9,8 +9,13 @@ import (
 func serve(paths ...string) {
 	r := mux.NewRouter()
 	r.Use(loggingMiddleware)
+	routeConfig, err := getRouteConfig(paths)
+	if err != nil {
+		log.Println(err.Error())
+		return
+	}
 
-	setRoutes(getRouteConfig(paths), r)
+	setRoutes(routeConfig, r)
 
 	_ = http.ListenAndServe(":8080", r)
 }
