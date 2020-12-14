@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 )
@@ -31,6 +33,19 @@ func handleAll(w http.ResponseWriter, req *http.Request) {
 	if errStr != "" {
 		http.Error(w, errStr, statusCode)
 	}
+
+	if r.Response != nil {
+		sendResponse(w, r)
+	}
+}
+
+func sendResponse(w http.ResponseWriter, r *route) {
+	respStr, err := json.Marshal(r.Response)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+
+	_, _ = fmt.Fprintf(w, string(respStr))
 }
 
 func setRoutes(configs []*config) {
