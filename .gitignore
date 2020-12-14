@@ -16,4 +16,6 @@
 
 .idea
 
-config.yml
+configs
+
+main.go
