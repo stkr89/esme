@@ -1,4 +1,4 @@
-package main
+package esme
 
 type config struct {
 	Routes []*route `yaml:"routes" validate:"gte=1,dive"`

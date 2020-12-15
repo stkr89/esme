@@ -1,4 +1,4 @@
-package main
+package esme
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 
 var routeConfigMap map[string]*route
 
-func serve(port string, paths ...string) {
+func Serve(port string, paths ...string) {
 	routeConfig, err := getRouteConfig(paths)
 	if err != nil {
 		log.Println(err.Error())
