@@ -65,6 +65,7 @@ func sendResponse(w http.ResponseWriter, r *route) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
+	w.Header().Add("Content-Type", "application/json")
 	_, _ = fmt.Fprintf(w, string(respStr))
 }
 
