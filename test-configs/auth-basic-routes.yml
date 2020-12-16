@@ -22,6 +22,7 @@ routes:
     response:
       - firstName: foo
         lastName: bar
+        id: 3
     auth:
       basic:
         username: username
