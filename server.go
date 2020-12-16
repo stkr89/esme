@@ -22,7 +22,7 @@ func launchServer(port string) {
 
 	m.HandleFunc("/", handleAll)
 	m.HandleFunc("/shutdown", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("OK"))
+		_, _ = w.Write([]byte("OK"))
 		go func() {
 			log.Println("shutting down ESME server on port " + port)
 			if err := s.Shutdown(context.Background()); err != nil {

@@ -1,5 +1,5 @@
 routes:
-  - url: /auth/custom/users/1
+  - url: /auth/custom/users
     method: GET
     status_code: 200
     response:

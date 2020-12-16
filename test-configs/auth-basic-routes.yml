@@ -1,5 +1,5 @@
 routes:
-  - url: /auth/basic/users/1
+  - url: /auth/basic/users
     method: GET
     status_code: 200
     response:
@@ -46,6 +46,6 @@ routes:
     status_code: 200
     auth:
       basic:
-        username: admin
-        password: pass
+        username: username
+        password: password
 
