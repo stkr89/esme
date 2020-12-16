@@ -8,6 +8,7 @@ type route struct {
 	Url        string              `yaml:"url" validate:"required"`
 	Method     string              `yaml:"method" validate:"required"`
 	StatusCode int                 `yaml:"status_code" validate:"required"`
+	Body       map[string]string   `yaml:"body"`
 	Response   []map[string]string `yaml:"response"`
 	Auth       *auth               `yaml:"auth"`
 }
