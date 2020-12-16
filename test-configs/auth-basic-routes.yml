@@ -36,6 +36,7 @@ routes:
     response:
       - firstName: Foo
         lastName: Bar
+        id: 3
     auth:
       basic:
         username: username
