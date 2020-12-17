@@ -5,6 +5,11 @@ import (
 	"net/http"
 )
 
+/*
+Serve method takes a port and route config file(s) as arguments.
+It is responsible for parsing the route config files(s), generate routes, set authentication and
+start the server at the specified port.
+*/
 func Serve(port string, paths ...string) {
 	routeConfig, err := getRouteConfig(paths)
 	if err != nil {
