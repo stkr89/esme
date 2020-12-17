@@ -1,8 +1,10 @@
 package esme
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -28,6 +30,18 @@ func handleAll(w http.ResponseWriter, req *http.Request) {
 
 	if r.Response != nil {
 		sendResponse(w, r)
+	}
+}
+
+func handleShutdown(port string, s *http.Server) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("OK"))
+		go func() {
+			log.Println("shutting down ESME server on port " + port)
+			if err := s.Shutdown(context.Background()); err != nil {
+				log.Println(err)
+			}
+		}()
 	}
 }
 

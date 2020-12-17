@@ -1,7 +1,6 @@
 package esme
 
 import (
-	"context"
 	"log"
 	"net/http"
 )
@@ -21,15 +20,7 @@ func launchServer(port string) {
 	s := http.Server{Addr: ":" + port, Handler: m}
 
 	m.HandleFunc("/", handleAll)
-	m.HandleFunc("/shutdown", func(w http.ResponseWriter, r *http.Request) {
-		_, _ = w.Write([]byte("OK"))
-		go func() {
-			log.Println("shutting down ESME server on port " + port)
-			if err := s.Shutdown(context.Background()); err != nil {
-				log.Println(err)
-			}
-		}()
-	})
+	m.HandleFunc("/shutdown", handleShutdown(port, &s))
 
 	log.Println("starting ESME server on port " + port)
 
