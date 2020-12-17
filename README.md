@@ -43,7 +43,7 @@ Start a mock server using above `route-config.yml` file
 package main
 
 import (
-	"github.com/stkr89/esme-runner/esme"
+	"github.com/stkr89/esme"
 )
 
 func main() {
