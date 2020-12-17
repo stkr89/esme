@@ -38,6 +38,21 @@ routes:
       custom:
         my_header: value
 ```
+Start a mock server using above `route-config.yml` file
+```go
+package main
+
+import (
+	"github.com/stkr89/esme-runner/esme"
+)
+
+func main() {
+    esme.Serve("8080", "./route-config.yml")
+}
+```
+
+> You can also provide multiple route configs as arguments to `Serve` method.  
+
 Let's break down this file to understand what each component means.
 ## Routes
 `routes` contains the list of routes which need to be mocked. ESME supports adding 
