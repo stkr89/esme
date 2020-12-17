@@ -43,6 +43,7 @@ func setRoutes(configs []*config) {
 
 	for _, c := range configs {
 		for _, r := range c.Routes {
+			log.Printf("added route %s %s", r.Method, r.Url)
 			configMap[getRouteMapKey(r.Method, r.Url)] = r
 		}
 	}
