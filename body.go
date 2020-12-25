@@ -10,6 +10,10 @@ import (
 const InvalidRequestBodyError = "invalid request body"
 
 func checkBody(requiredBody map[string]string, body io.ReadCloser) error {
+	if requiredBody == nil {
+		return nil
+	}
+
 	bytes, err := ioutil.ReadAll(body)
 	if err != nil {
 		return err
