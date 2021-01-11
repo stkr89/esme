@@ -13,6 +13,11 @@ import (
 
 var url = os.Getenv("url")
 
+type user struct {
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+}
+
 func Test_getAuthBasic_failure(t *testing.T) {
 	r := skeleton.Request{
 		Url:     fmt.Sprintf("%s/auth/basic/users", url),
@@ -86,13 +91,17 @@ func Test_postAuthBasic_noBody_failure(t *testing.T) {
 }
 
 func Test_postAuthBasic_success(t *testing.T) {
+	user := user{
+		FirstName: "foo",
+		LastName:  "bar",
+	}
+
+	userBytes, _ := json.Marshal(user)
+
 	r := skeleton.Request{
-		Url:    fmt.Sprintf("%s/auth/basic/user", url),
-		Method: http.MethodPost,
-		Body: map[string]string{
-			"firstName": "foo",
-			"lastName":  "bar",
-		},
+		Url:     fmt.Sprintf("%s/auth/basic/user", url),
+		Method:  http.MethodPost,
+		Body:    userBytes,
 		Timeout: 10,
 		Auth: &skeleton.Auth{
 			Basic: &skeleton.AuthBasic{
@@ -171,13 +180,17 @@ func Test_putAuthBasic_invalidCredentials_failure(t *testing.T) {
 }
 
 func Test_putAuthBasic_success(t *testing.T) {
+	user := user{
+		FirstName: "Foo",
+		LastName:  "Bar",
+	}
+
+	userBytes, _ := json.Marshal(user)
+
 	r := skeleton.Request{
-		Url:    fmt.Sprintf("%s/auth/basic/user", url),
-		Method: http.MethodPut,
-		Body: map[string]string{
-			"firstName": "Foo",
-			"lastName":  "Bar",
-		},
+		Url:     fmt.Sprintf("%s/auth/basic/user", url),
+		Method:  http.MethodPut,
+		Body:    userBytes,
 		Timeout: 10,
 		Auth: &skeleton.Auth{
 			Basic: &skeleton.AuthBasic{
