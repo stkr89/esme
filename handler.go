@@ -24,6 +24,7 @@ func handleAll(w http.ResponseWriter, req *http.Request) {
 	}
 
 	if (*req).Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
 		return
 	}
 
