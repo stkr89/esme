@@ -15,9 +15,9 @@ func handleAll(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, "Not found", http.StatusNotFound)
 	}
 
-	r := routeConfigMap[getRouteMapKey(req.Method, req.URL.Path)]
+	fmt.Sprintf(req.Method, req.URL.Path)
 
-	fmt.Sprintf("%v\n", r)
+	r := routeConfigMap[getRouteMapKey(req.Method, req.URL.Path)]
 
 	errStr, statusCode := checkAuthorization(req, r)
 	if errStr != "" {
