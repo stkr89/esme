@@ -15,16 +15,7 @@ func handleAll(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, "Not found", http.StatusNotFound)
 	}
 
-	if (*req).Method == http.MethodOptions {
-		w.WriteHeader(http.StatusOK)
-		return
-	}
-
 	r := routeConfigMap[getRouteMapKey(req.Method, req.URL.Path)]
-
-	if r == nil {
-		return
-	}
 
 	errStr, statusCode := checkAuthorization(req, r)
 	if errStr != "" {
