@@ -10,7 +10,13 @@ import (
 
 var routeConfigMap map[string]*route
 
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
+
 func handleAll(w http.ResponseWriter, req *http.Request) {
+	enableCors(&w)
+
 	if _, ok := routeConfigMap[getRouteMapKey(req.Method, req.URL.Path)]; !ok {
 		http.Error(w, "Not found", http.StatusNotFound)
 	}
