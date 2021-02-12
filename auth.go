@@ -32,7 +32,7 @@ func getAuthCheckers() []func(r *http.Request, route *route) (string, int) {
 }
 
 func checkCustomHeaders(r *http.Request, route *route) (string, int) {
-	if route.Auth != nil && route.Auth.Custom != nil {
+	if route.Auth.Custom != nil {
 		custom := route.Auth.Custom
 		for k, v := range custom {
 			headerVal := r.Header.Get(k)
@@ -50,7 +50,7 @@ func checkCustomHeaders(r *http.Request, route *route) (string, int) {
 func checkBearerTokenAuth(r *http.Request, route *route) (string, int) {
 	header := r.Header.Get("Authorization")
 
-	if route.Auth != nil && route.Auth.BearerToken != nil {
+	if route.Auth.BearerToken != nil {
 		bearer := route.Auth.BearerToken
 		if header == "" || header != "Bearer "+bearer.Token {
 			log.Println(AuthorizationBearerTokenError)
@@ -64,7 +64,7 @@ func checkBearerTokenAuth(r *http.Request, route *route) (string, int) {
 func checkBasicAuth(r *http.Request, route *route) (string, int) {
 	header := r.Header.Get("Authorization")
 
-	if route.Auth != nil && route.Auth.Basic != nil {
+	if route.Auth.Basic != nil {
 		basic := route.Auth.Basic
 		if header == "" || header != basicAuthHeaderValue(basic.Username, basic.Password) {
 			log.Println(AuthorizationBasicError)
