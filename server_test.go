@@ -18,6 +18,11 @@ type user struct {
 	LastName  string `json:"lastName"`
 }
 
+type login struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 func Test_getAuthBasic_failure(t *testing.T) {
 	r := skeleton.Request{
 		Url:     fmt.Sprintf("%s/auth/basic/users", url),
@@ -339,4 +344,25 @@ func Test_getAuthCustomHeader_success(t *testing.T) {
 	resp, err := skeleton.Send(&r)
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
+}
+
+func Test_postNoAuth_success(t *testing.T) {
+	login := login{
+		Email:    "user@email.com",
+		Password: "pass",
+	}
+
+	loginBytes, _ := json.Marshal(login)
+
+	r := skeleton.Request{
+		Url:     fmt.Sprintf("%s/login", url),
+		Method:  http.MethodPost,
+		Body:    loginBytes,
+		Timeout: 10,
+	}
+
+	resp, err := skeleton.Send(&r)
+	fmt.Println(resp.StatusCode)
+	assert.NoError(t, err)
+	assert.Equal(t, http.StatusCreated, resp.StatusCode)
 }
