@@ -14,10 +14,6 @@ const (
 
 func checkAuthorization(r *http.Request, route *route) (string, int) {
 	for _, f := range getAuthCheckers() {
-		if route.Auth == nil {
-			continue
-		}
-
 		errStr, statusCode := f(r, route)
 		if errStr != "" {
 			return errStr, statusCode
