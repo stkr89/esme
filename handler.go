@@ -17,6 +17,8 @@ func handleAll(w http.ResponseWriter, req *http.Request) {
 
 	r := routeConfigMap[getRouteMapKey(req.Method, req.URL.Path)]
 
+	fmt.Sprintf("%v\n", r.Auth)
+
 	errStr, statusCode := checkAuthorization(req, r)
 	if errStr != "" {
 		http.Error(w, errStr, statusCode)
