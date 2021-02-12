@@ -16,16 +16,12 @@ func handleAll(w http.ResponseWriter, req *http.Request) {
 	}
 
 	if req.Method == http.MethodOptions {
-		w.WriteHeader(http.StatusOK)
-		_, _ = fmt.Fprintf(w, "")
 		return
 	}
 
 	r := routeConfigMap[getRouteMapKey(req.Method, req.URL.Path)]
 
 	if r == nil {
-		w.WriteHeader(http.StatusBadRequest)
-		_, _ = fmt.Fprintf(w, "")
 		return
 	}
 
