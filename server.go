@@ -1,6 +1,7 @@
 package esme
 
 import (
+	"github.com/rs/cors"
 	"log"
 	"net/http"
 )
@@ -22,7 +23,8 @@ func Serve(port string, paths ...string) {
 
 func launchServer(port string) {
 	m := http.NewServeMux()
-	s := http.Server{Addr: ":" + port, Handler: m}
+	handler := cors.Default().Handler(m)
+	s := http.Server{Addr: ":" + port, Handler: handler}
 
 	m.HandleFunc("/", handleAll)
 	m.HandleFunc("/shutdown", handleShutdown(port, &s))
