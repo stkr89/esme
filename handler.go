@@ -28,6 +28,7 @@ func handleAll(w http.ResponseWriter, req *http.Request) {
 	err := checkBody(r.Body, req.Body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	if r.Response != nil {
@@ -51,6 +52,7 @@ func sendResponse(w http.ResponseWriter, r *route) {
 	respStr, err := json.Marshal(r.Response)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	w.Header().Add("Content-Type", "application/json")
