@@ -15,7 +15,7 @@ func handleAll(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, "Not found", http.StatusNotFound)
 	}
 
-	fmt.Sprintf(req.Method, req.URL.Path)
+	log.Println(req.Method, req.URL.Path)
 
 	r := routeConfigMap[getRouteMapKey(req.Method, req.URL.Path)]
 
