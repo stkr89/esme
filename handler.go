@@ -17,12 +17,12 @@ func handleAll(w http.ResponseWriter, req *http.Request) {
 
 	r := routeConfigMap[getRouteMapKey(req.Method, req.URL.Path)]
 
-	log.Printf("%v\n", r.Auth)
-
-	errStr, statusCode := checkAuthorization(req, r)
-	if errStr != "" {
-		http.Error(w, errStr, statusCode)
-		return
+	if r.Auth != nil {
+		errStr, statusCode := checkAuthorization(req, r)
+		if errStr != "" {
+			http.Error(w, errStr, statusCode)
+			return
+		}
 	}
 
 	err := checkBody(r.Body, req.Body)
