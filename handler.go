@@ -31,9 +31,13 @@ func handleAll(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	if r.Response != nil {
+	if hasResponse(r) {
 		sendResponse(w, r)
 	}
+}
+
+func hasResponse(r *route) bool {
+	return r.ResponseArr != nil || r.ResponseObj != nil || r.ResponseStr != ""
 }
 
 func handleShutdown(port string, s *http.Server) func(w http.ResponseWriter, r *http.Request) {
@@ -49,7 +53,17 @@ func handleShutdown(port string, s *http.Server) func(w http.ResponseWriter, r *
 }
 
 func sendResponse(w http.ResponseWriter, r *route) {
-	respStr, err := json.Marshal(r.Response)
+	var respStr []byte
+	var err error
+
+	if r.ResponseStr != "" {
+		respStr = []byte(r.ResponseStr)
+	} else if r.ResponseObj != nil {
+		respStr, err = json.Marshal(r.ResponseObj)
+	} else {
+		respStr, err = json.Marshal(r.ResponseArr)
+	}
+
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

@@ -8,7 +8,7 @@ routes:
   - url: /users/1
     method: GET
     status_code: 200
-    response:
+    response_arr:
       - firstName: jane
         lastName: doe
         id: 1
@@ -25,15 +25,16 @@ routes:
     body:
       firstName: foo
       lastName: bar
-    response:
-      - firstName: foo
-        lastName: bar
+    response_obj:
+      firstName: foo
+      lastName: bar
     auth:
       bearer_token:
         token: token
   - url: /user/1
     method: DELETE
     status_code: 200
+    response_str: success
     auth:
       custom:
         my_header: value
@@ -66,8 +67,9 @@ simultaneously.
 `status_code` defines the http status code that needs to be returned from the 
 endpoint.
 ### Response
+#### Array
 ```yaml
-response:
+response_arr:
   - firstName: jane
     lastName: doe
     id: 1
@@ -75,7 +77,18 @@ response:
     lastName: doe
     id: 2
 ```
-`response` defines a list of objects that the endpoint returns on success.
+#### Object
+```yaml
+response_obj:
+  firstName: jane
+  lastName: doe
+  id: 1
+```
+#### String
+```yaml
+response_str: success
+```
+`response` defines an array, object or string that the endpoint returns on success.
 ### Auth
 `auth` defines the authentication scheme required for an endpoint. Each `url` can
 have its own authentication scheme. ESME supports following authentication schemes:
