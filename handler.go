@@ -67,8 +67,6 @@ func sendResponse(w http.ResponseWriter, r *route) {
 		w.Header().Add("Content-Type", "application/json")
 	}
 
-	log.Println(string(respStr))
-
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
