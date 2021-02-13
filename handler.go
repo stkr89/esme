@@ -37,7 +37,7 @@ func handleAll(w http.ResponseWriter, req *http.Request) {
 }
 
 func hasResponse(r *route) bool {
-	return r.ResponseArr != nil && r.ResponseObj != nil && r.ResponseStr != ""
+	return r.ResponseArr != nil || r.ResponseObj != nil || r.ResponseStr != ""
 }
 
 func handleShutdown(port string, s *http.Server) func(w http.ResponseWriter, r *http.Request) {
