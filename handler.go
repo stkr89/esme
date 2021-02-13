@@ -58,22 +58,18 @@ func sendResponse(w http.ResponseWriter, r *route) {
 
 	if r.ResponseStr != "" {
 		respStr = []byte(r.ResponseStr)
-		w.Header().Add("Content-Type", "text/plain")
 	} else if r.ResponseObj != nil {
 		respStr, err = json.Marshal(r.ResponseObj)
-		w.Header().Add("Content-Type", "application/json")
 	} else {
 		respStr, err = json.Marshal(r.ResponseArr)
-		w.Header().Add("Content-Type", "application/json")
 	}
-
-	log.Println(string(respStr), err)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
+	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(r.StatusCode)
 	_, _ = fmt.Fprintf(w, string(respStr))
 }
