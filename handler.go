@@ -71,7 +71,5 @@ func sendResponse(w http.ResponseWriter, r *route) {
 
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(r.StatusCode)
-	_, err = fmt.Fprintf(w, string(respStr))
-
-	log.Println(err)
+	_, _ = fmt.Fprintf(w, string(respStr))
 }
