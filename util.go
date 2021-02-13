@@ -24,7 +24,7 @@ func getRouteConfig(paths []string) ([]*config, error) {
 			panic(err)
 		}
 
-		log.Println(c)
+		log.Println(c.Routes[0].ResponseArr, c.Routes[0].ResponseObj, c.Routes[0].ResponseStr)
 
 		err = verify(&c, path)
 		if err != nil {
