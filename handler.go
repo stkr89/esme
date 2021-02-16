@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 )
 
 var routeConfigMap map[string]*route
@@ -60,15 +59,12 @@ func sendResponse(w http.ResponseWriter, r *route) {
 	if r.ResponseStr != "" {
 		respStr = []byte(r.ResponseStr)
 	} else if r.ResponseObj != nil {
-		enc := json.NewEncoder(os.Stdout)
-		err := enc.Encode(r.ResponseObj)
-		if err != nil {
-			fmt.Println(err.Error())
-		}
 		respStr, err = json.Marshal(r.ResponseObj)
 	} else {
 		respStr, err = json.Marshal(r.ResponseArr)
 	}
+
+	log.Println("---", string(respStr))
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
