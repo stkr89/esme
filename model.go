@@ -5,12 +5,12 @@ type config struct {
 }
 
 type route struct {
-	Url        string      `json:"url" validate:"required"`
-	Method     string      `json:"method" validate:"required"`
-	StatusCode int         `json:"status_code" validate:"required"`
-	Body       interface{} `json:"body"`
-	Response   interface{} `json:"response"`
-	Auth       *auth       `json:"auth"`
+	Url        string            `json:"url" validate:"required"`
+	Method     string            `json:"method" validate:"required"`
+	StatusCode int               `json:"status_code" validate:"required"`
+	Body       map[string]string `json:"body"`
+	Response   interface{}       `json:"response"`
+	Auth       *auth             `json:"auth"`
 }
 
 type auth struct {
