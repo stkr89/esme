@@ -1,8 +1,18 @@
-# Embeddable Service Mocking Engine (ESME)
-ESME allows you to define the destination mock services in `json` format. These 
-services can then simply be consumed by test cases to get the expected behaviour. 
+# What is Embeddable Service Mocking Engine (ESME)?
+
+ESME is a go library that allows you to mock a RESTful service by defining the configuration in `json` format. This
+service can then simply be consumed by any client to get the expected response.
+
+# Where can it be used?
+
+- while developing frontend
+- while consuming external APIs
+- to set up an API with static content
+
 ## Usage
+
 Here is a sample `route-config.json` file that can be processed by ESME
+
 ```json
 {
   "routes": [
@@ -61,7 +71,9 @@ Here is a sample `route-config.json` file that can be processed by ESME
   ]
 }
 ```
+
 Start a mock server using above `route-config.json` file
+
 ```go
 package main
 
@@ -70,26 +82,35 @@ import (
 )
 
 func main() {
-    esme.Serve("8080", "./route-config.json")
+	esme.Serve("8080", "./route-config.json")
 }
 ```
 
-> You can also provide multiple route configs as arguments to `Serve` method.  
+> You can also provide multiple route configs as arguments to `Serve` method.
 
 Let's break down this file to understand what each component means.
+
 ## Routes
-`routes` contains the list of routes which need to be mocked. ESME supports adding 
-routes to multiple files which can represent different services running 
-simultaneously.
+
+`routes` contains the list of routes which need to be mocked. ESME supports adding routes to multiple files which can
+represent different services running simultaneously.
+
 ### URL
+
 `url` defines the route that need to be mocked.
+
 ### Method
+
 `method` defines the http method associated with an url.
+
 ### Status Code
-`status_code` defines the http status code that needs to be returned from the 
-endpoint.
+
+`status_code` defines the http status code that needs to be returned from the endpoint.
+
 ### Response
+
 #### Array
+
 ```json
 {
   "response": [
@@ -106,7 +127,9 @@ endpoint.
   ]
 }
 ```
+
 #### Object
+
 ```json
 {
   "response": {
@@ -116,17 +139,24 @@ endpoint.
   }
 }
 ```
+
 #### String
+
 ```json
 {
   "response": "success"
 }
 ```
+
 `response` defines an array, object or string that the endpoint returns on success.
+
 ### Auth
-`auth` defines the authentication scheme required for an endpoint. Each `url` can
-have its own authentication scheme. ESME supports following authentication schemes:
+
+`auth` defines the authentication scheme required for an endpoint. Each `url` can have its own authentication scheme.
+ESME supports following authentication schemes:
+
 #### Basic
+
 ```json
 {
   "auth": {
@@ -137,10 +167,13 @@ have its own authentication scheme. ESME supports following authentication schem
   }
 }
 ```
-`basic` authentication checks for a header field in the form of 
-`Authorization: Basic <credentials>`, where `<credentials>` is the Base64 
-encoding of username and password joined by a single colon `:`.
+
+`basic` authentication checks for a header field in the form of
+`Authorization: Basic <credentials>`, where `<credentials>` is the Base64 encoding of username and password joined by a
+single colon `:`.
+
 #### Bearer Token
+
 ```json
 {
   "auth": {
@@ -150,9 +183,12 @@ encoding of username and password joined by a single colon `:`.
   }
 }
 ```
-`bearer_token` authentication checks for a header field in the form of 
+
+`bearer_token` authentication checks for a header field in the form of
 `Authorization: Bearer <token>`.
+
 #### Custom
+
 ```json
 {
   "auth": {
@@ -163,5 +199,6 @@ encoding of username and password joined by a single colon `:`.
   }
 }
 ```
-`custom` authentication checks for headers `my_header_1` and `my_header_2` 
+
+`custom` authentication checks for headers `my_header_1` and `my_header_2`
 with values `value1` and `value2` respectively.
