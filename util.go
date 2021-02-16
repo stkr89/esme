@@ -6,6 +6,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"log"
 )
 
 func getRouteConfig(paths []string) ([]*config, error) {
@@ -22,6 +23,8 @@ func getRouteConfig(paths []string) ([]*config, error) {
 		if err != nil {
 			panic(err)
 		}
+
+		log.Println(c.Routes[0].ResponseObj)
 
 		err = verify(&c, path)
 		if err != nil {
