@@ -5,14 +5,14 @@ type config struct {
 }
 
 type route struct {
-	Url         string                 `yaml:"url" validate:"required"`
-	Method      string                 `yaml:"method" validate:"required"`
-	StatusCode  int                    `yaml:"status_code" validate:"required"`
-	Body        map[string]string      `yaml:"body"`
-	ResponseObj map[string]interface{} `yaml:"response_obj"`
-	ResponseArr []map[string]string    `yaml:"response_arr"`
-	ResponseStr string                 `yaml:"response_str"`
-	Auth        *auth                  `yaml:"auth"`
+	Url         string                      `yaml:"url" validate:"required"`
+	Method      string                      `yaml:"method" validate:"required"`
+	StatusCode  int                         `yaml:"status_code" validate:"required"`
+	Body        map[string]string           `yaml:"body"`
+	ResponseObj map[interface{}]interface{} `yaml:"response_obj"`
+	ResponseArr []map[string]string         `yaml:"response_arr"`
+	ResponseStr string                      `yaml:"response_str"`
+	Auth        *auth                       `yaml:"auth"`
 }
 
 type auth struct {
