@@ -7,11 +7,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"testing"
 )
 
-var url = os.Getenv("url")
+var url = "https://esme-runner-cloud-ct5vendzhq-uc.a.run.app"
 
 type user struct {
 	FirstName string `json:"firstName"`
