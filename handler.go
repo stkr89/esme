@@ -54,20 +54,20 @@ func handleShutdown(port string, s *http.Server) func(w http.ResponseWriter, r *
 
 func sendResponse(w http.ResponseWriter, r *route) {
 	var respStr []byte
-	//var err error
+	var err error
 
 	if r.ResponseStr != "" {
 		respStr = []byte(r.ResponseStr)
 	} else if r.ResponseObj != nil {
-		respStr, _ = json.Marshal(r.ResponseObj)
+		respStr, err = json.Marshal(r.ResponseObj)
 	} else {
-		respStr, _ = json.Marshal(r.ResponseArr)
+		respStr, err = json.Marshal(r.ResponseArr)
 	}
 
-	//if err != nil {
-	//	http.Error(w, err.Error(), http.StatusInternalServerError)
-	//	return
-	//}
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(r.StatusCode)
