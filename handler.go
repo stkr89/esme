@@ -59,15 +59,8 @@ func sendResponse(w http.ResponseWriter, r *route) {
 	if r.ResponseStr != "" {
 		respStr = []byte(r.ResponseStr)
 	} else if r.ResponseObj != nil {
-		mapString := make(map[string]interface{})
-		for key, value := range r.ResponseObj {
-			strKey := fmt.Sprintf("%v", key)
-			strValue := value
-
-			mapString[strKey] = strValue
-		}
-		log.Println(mapString)
-		respStr, err = json.Marshal(mapString)
+		log.Println(fmt.Printf("%T", r.ResponseObj))
+		respStr, err = json.Marshal(r.ResponseObj)
 	} else {
 		respStr, err = json.Marshal(r.ResponseArr)
 	}
