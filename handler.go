@@ -59,6 +59,7 @@ func sendResponse(w http.ResponseWriter, r *route) {
 	if r.ResponseStr != "" {
 		respStr = []byte(r.ResponseStr)
 	} else if r.ResponseObj != nil {
+		log.Println(r.ResponseObj)
 		respStr, err = json.Marshal(r.ResponseObj)
 	} else {
 		respStr, err = json.Marshal(r.ResponseArr)
