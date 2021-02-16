@@ -2,9 +2,9 @@ package esme
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
 	"github.com/go-playground/validator/v10"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 )
 
@@ -18,7 +18,7 @@ func getRouteConfig(paths []string) ([]*config, error) {
 		}
 
 		var c config
-		err = yaml.Unmarshal(fileBytes, &c)
+		err = json.Unmarshal(fileBytes, &c)
 		if err != nil {
 			panic(err)
 		}

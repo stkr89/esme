@@ -1,31 +1,29 @@
 package esme
 
 type config struct {
-	Routes []*route `yaml:"routes" validate:"gte=1,dive"`
+	Routes []*route `json:"routes" validate:"gte=1,dive"`
 }
 
 type route struct {
-	Url         string              `yaml:"url" validate:"required"`
-	Method      string              `yaml:"method" validate:"required"`
-	StatusCode  int                 `yaml:"status_code" validate:"required"`
-	Body        map[string]string   `yaml:"body"`
-	ResponseObj map[string]string   `yaml:"response_obj"`
-	ResponseArr []map[string]string `yaml:"response_arr"`
-	ResponseStr string              `yaml:"response_str"`
-	Auth        *auth               `yaml:"auth"`
+	Url        string            `json:"url" validate:"required"`
+	Method     string            `json:"method" validate:"required"`
+	StatusCode int               `json:"status_code" validate:"required"`
+	Body       map[string]string `json:"body"`
+	Response   interface{}       `json:"response"`
+	Auth       *auth             `json:"auth"`
 }
 
 type auth struct {
-	Basic       *authBasic        `yaml:"basic"`
-	BearerToken *authBearerToken  `yaml:"bearer_token"`
-	Custom      map[string]string `yaml:"custom"`
+	Basic       *authBasic        `json:"basic"`
+	BearerToken *authBearerToken  `json:"bearer_token"`
+	Custom      map[string]string `json:"custom"`
 }
 
 type authBasic struct {
-	Username string `yaml:"username" validate:"required"`
-	Password string `yaml:"password" validate:"required"`
+	Username string `json:"username" validate:"required"`
+	Password string `json:"password" validate:"required"`
 }
 
 type authBearerToken struct {
-	Token string `yaml:"token" validate:"required"`
+	Token string `json:"token" validate:"required"`
 }
