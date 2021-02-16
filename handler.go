@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"reflect"
 )
 
 var routeConfigMap map[string]*route
@@ -59,6 +60,8 @@ func sendResponse(w http.ResponseWriter, r *route) {
 	if r.ResponseStr != "" {
 		respStr = []byte(r.ResponseStr)
 	} else if r.ResponseObj != nil {
+		iter := reflect.ValueOf(r.ResponseObj).MapRange()
+		log.Println(iter)
 		respStr, err = json.Marshal(r.ResponseObj)
 	} else {
 		respStr, err = json.Marshal(r.ResponseArr)
