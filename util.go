@@ -25,7 +25,7 @@ func getRouteConfig(paths []string) ([]*config, error) {
 
 		err = verify(&c, path)
 		if err != nil {
-			return nil, err
+			panic(err)
 		}
 
 		configs = append(configs, &c)
