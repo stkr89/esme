@@ -11,6 +11,11 @@ import (
 var routeConfigMap map[string]*route
 
 func handleAll(w http.ResponseWriter, req *http.Request) {
+	if req.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		_, _ = fmt.Fprintf(w, "")
+	}
+
 	if _, ok := routeConfigMap[getRouteMapKey(req.Method, req.URL.Path)]; !ok {
 		http.Error(w, "Not found", http.StatusNotFound)
 	}
