@@ -1,7 +1,12 @@
 package esme
 
 type config struct {
-	Routes []*route `json:"routes" validate:"gte=1,dive"`
+	Groups []*group `json:"groups" validate:"gte=1,dive"`
+}
+
+type group struct {
+	Auth      *auth    `json:"Auth"`
+	Endpoints []*route `json:"routes" validate:"gte=1,dive"`
 }
 
 type route struct {
@@ -10,7 +15,7 @@ type route struct {
 	StatusCode int               `json:"status_code" validate:"required"`
 	Body       map[string]string `json:"body"`
 	Response   interface{}       `json:"response"`
-	Auth       *auth             `json:"auth"`
+	Auth       *auth             `json:"-"`
 }
 
 type auth struct {
