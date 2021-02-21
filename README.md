@@ -70,7 +70,7 @@ Here is a sample `route-config.json` file that can be processed by ESME
         "custom": {
           "my_header": "value"
         }
-      }
+      },
       "endpoints": [
         {
           "url": "/user/1",
