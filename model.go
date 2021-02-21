@@ -5,8 +5,8 @@ type config struct {
 }
 
 type group struct {
-	Auth      *auth    `json:"Auth"`
-	Endpoints []*route `json:"routes" validate:"gte=1,dive"`
+	Auth      *auth    `json:"auth"`
+	Endpoints []*route `json:"endpoints" validate:"gte=1,dive"`
 }
 
 type route struct {
