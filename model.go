@@ -1,7 +1,7 @@
 package esme
 
 type config struct {
-	Groups []*group `json:"groups" validate:"gte=1,dive"`
+	RouteGroups []*group `json:"route_groups" validate:"gte=1,dive"`
 }
 
 type group struct {

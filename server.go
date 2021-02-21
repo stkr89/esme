@@ -38,7 +38,7 @@ func setRoutes(configs []*config) {
 	configMap := make(map[string]*route)
 
 	for _, c := range configs {
-		for _, group := range c.Groups {
+		for _, group := range c.RouteGroups {
 			for _, endpoint := range group.Endpoints {
 				endpoint.Auth = group.Auth
 				configMap[getRouteMapKey(endpoint.Method, endpoint.Url)] = endpoint
