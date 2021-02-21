@@ -18,7 +18,10 @@ func setupResponse(w *http.ResponseWriter, req *http.Request) {
 
 func handleAll(w http.ResponseWriter, req *http.Request) {
 	setupResponse(&w, req)
+
 	if (*req).Method == "OPTIONS" {
+		w.WriteHeader(http.StatusOK)
+		_, _ = fmt.Fprintf(w, "")
 		return
 	}
 
