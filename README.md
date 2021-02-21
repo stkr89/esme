@@ -15,58 +15,70 @@ Here is a sample `route-config.json` file that can be processed by ESME
 
 ```json
 {
-  "routes": [
+  "route_groups": [
     {
-      "url": "/users/1",
-      "method": "GET",
-      "status_code": 200,
-      "response": [
-        {
-          "firstName": "jane",
-          "lastName": "doe",
-          "id": 1
-        },
-        {
-          "firstName": "john",
-          "lastName": "doe",
-          "id": 2
-        }
-      ],
       "auth": {
         "basic": {
           "username": "username",
           "password": "password"
         }
-      }
+      },
+      "endpoints": [
+        {
+          "url": "/users/1",
+          "method": "GET",
+          "status_code": 200,
+          "response": [
+            {
+              "firstName": "jane",
+              "lastName": "doe",
+              "id": 1
+            },
+            {
+              "firstName": "john",
+              "lastName": "doe",
+              "id": 2
+            }
+          ]
+        }
+      ]
     },
     {
-      "url": "/user",
-      "method": "POST",
-      "status_code": 201,
-      "body": {
-        "firstName": "foo",
-        "lastName": "bar"
-      },
-      "response": {
-        "firstName": "foo",
-        "lastName": "bar"
-      },
       "auth": {
         "bearer_token": {
           "token": "token"
         }
-      }
+      },
+      "endpoints": [
+        {
+          "url": "/user",
+          "method": "POST",
+          "status_code": 201,
+          "body": {
+            "firstName": "foo",
+            "lastName": "bar"
+          },
+          "response": {
+            "firstName": "foo",
+            "lastName": "bar"
+          }
+        }
+      ]
     },
     {
-      "url": "/user/1",
-      "method": "DELETE",
-      "status_code": 200,
-      "response": "success",
       "auth": {
         "custom": {
           "my_header": "value"
         }
       }
+      "endpoints": [
+        {
+          "url": "/user/1",
+          "method": "DELETE",
+          "status_code": 200,
+          "response": "success"
+        }
+      ]
     }
   ]
 }
@@ -90,10 +102,67 @@ func main() {
 
 Let's break down this file to understand what each component means.
 
-## Routes
+## Route Groups
 
-`routes` contains the list of routes which need to be mocked. ESME supports adding routes to multiple files which can
-represent different services running simultaneously.
+`route_groups` contains the list of route groups which need to be mocked. ESME supports adding routes to multiple files
+which can represent different services running simultaneously.
+
+### Auth
+
+`auth` defines the authentication scheme required for each endpoint within the group. ESME supports following
+authentication schemes:
+
+#### Basic
+
+```json
+{
+  "auth": {
+    "basic": {
+      "username": "username",
+      "password": "password"
+    }
+  }
+}
+```
+
+`basic` authentication checks for a header field in the form of
+`Authorization: Basic <credentials>`, where `<credentials>` is the Base64 encoding of username and password joined by a
+single colon `:`.
+
+#### Bearer Token
+
+```json
+{
+  "auth": {
+    "bearer_token": {
+      "token": "token"
+    }
+  }
+}
+```
+
+`bearer_token` authentication checks for a header field in the form of
+`Authorization: Bearer <token>`.
+
+#### Custom
+
+```json
+{
+  "auth": {
+    "custom": {
+      "my_header_1": "value1",
+      "my_header_2": "value2"
+    }
+  }
+}
+```
+
+`custom` authentication checks for headers `my_header_1` and `my_header_2`
+with values `value1` and `value2` respectively.
+
+### Endpoints
+
+`endpoints` contains the list of all the endpoints within a group.
 
 ### URL
 
@@ -149,56 +218,3 @@ represent different services running simultaneously.
 ```
 
 `response` defines an array, object or string that the endpoint returns on success.
-
-### Auth
-
-`auth` defines the authentication scheme required for an endpoint. Each `url` can have its own authentication scheme.
-ESME supports following authentication schemes:
-
-#### Basic
-
-```json
-{
-  "auth": {
-    "basic": {
-      "username": "username",
-      "password": "password"
-    }
-  }
-}
-```
-
-`basic` authentication checks for a header field in the form of
-`Authorization: Basic <credentials>`, where `<credentials>` is the Base64 encoding of username and password joined by a
-single colon `:`.
-
-#### Bearer Token
-
-```json
-{
-  "auth": {
-    "bearer_token": {
-      "token": "token"
-    }
-  }
-}
-```
-
-`bearer_token` authentication checks for a header field in the form of
-`Authorization: Bearer <token>`.
-
-#### Custom
-
-```json
-{
-  "auth": {
-    "custom": {
-      "my_header_1": "value1",
-      "my_header_2": "value2"
-    }
-  }
-}
-```
-
-`custom` authentication checks for headers `my_header_1` and `my_header_2`
-with values `value1` and `value2` respectively.
