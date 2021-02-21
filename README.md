@@ -15,31 +15,21 @@ Here is a sample `route-config.json` file that can be processed by ESME
 
 ```json
 {
-  "route_groups": [
+  "routes": [
     {
-      "auth": {
-        "basic": {
-          "username": "username",
-          "password": "password"
-        }
-      },
-      "endpoints": [
+      "url": "/users/1",
+      "method": "GET",
+      "status_code": 200,
+      "response": [
         {
-          "url": "/users/1",
-          "method": "GET",
-          "status_code": 200,
-          "response": [
-            {
-              "firstName": "jane",
-              "lastName": "doe",
-              "id": 1
-            },
-            {
-              "firstName": "john",
-              "lastName": "doe",
-              "id": 2
-            }
-          ]
+          "firstName": "jane",
+          "lastName": "doe",
+          "id": 1
+        },
+        {
+          "firstName": "john",
+          "lastName": "doe",
+          "id": 2
         }
       ]
     },
@@ -218,3 +208,56 @@ with values `value1` and `value2` respectively.
 ```
 
 `response` defines an array, object or string that the endpoint returns on success.
+
+### Auth
+
+`auth` defines the authentication scheme required for an endpoint. Each `url` can have its own authentication scheme.
+ESME supports following authentication schemes:
+
+#### Basic
+
+```json
+{
+  "auth": {
+    "basic": {
+      "username": "username",
+      "password": "password"
+    }
+  }
+}
+```
+
+`basic` authentication checks for a header field in the form of
+`Authorization: Basic <credentials>`, where `<credentials>` is the Base64 encoding of username and password joined by a
+single colon `:`.
+
+#### Bearer Token
+
+```json
+{
+  "auth": {
+    "bearer_token": {
+      "token": "token"
+    }
+  }
+}
+```
+
+`bearer_token` authentication checks for a header field in the form of
+`Authorization: Bearer <token>`.
+
+#### Custom
+
+```json
+{
+  "auth": {
+    "custom": {
+      "my_header_1": "value1",
+      "my_header_2": "value2"
+    }
+  }
+}
+```
+
+`custom` authentication checks for headers `my_header_1` and `my_header_2`
+with values `value1` and `value2` respectively.
