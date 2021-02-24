@@ -10,12 +10,12 @@ type group struct {
 }
 
 type route struct {
-	Url        string            `json:"url" validate:"required"`
-	Method     string            `json:"method" validate:"required"`
-	StatusCode int               `json:"status_code" validate:"required"`
-	Body       map[string]string `json:"body"`
-	Response   interface{}       `json:"response"`
-	Auth       *auth             `json:"-"`
+	Url        string                 `json:"url" validate:"required"`
+	Method     string                 `json:"method" validate:"required"`
+	StatusCode int                    `json:"status_code" validate:"required"`
+	Body       map[string]interface{} `json:"body"`
+	Response   interface{}            `json:"response"`
+	Auth       *auth                  `json:"-"`
 }
 
 type auth struct {
