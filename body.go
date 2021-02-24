@@ -9,7 +9,7 @@ import (
 
 const InvalidRequestBodyError = "invalid request body"
 
-func checkBody(requiredBody map[string]string, body io.ReadCloser) error {
+func checkBody(requiredBody map[string]interface{}, body io.ReadCloser) error {
 	if requiredBody == nil {
 		return nil
 	}
