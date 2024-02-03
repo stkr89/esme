@@ -4,15 +4,16 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"os"
+
 	"github.com/go-playground/validator/v10"
-	"io/ioutil"
 )
 
 func getRouteConfig(paths []string) ([]*config, error) {
 	var configs []*config
 
 	for _, path := range paths {
-		fileBytes, err := ioutil.ReadFile(path)
+		fileBytes, err := os.ReadFile(path)
 		if err != nil {
 			panic(err)
 		}

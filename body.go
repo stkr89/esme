@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
-	"io/ioutil"
 )
 
 const InvalidRequestBodyError = "invalid request body"
@@ -14,7 +13,7 @@ func checkBody(requiredBody map[string]interface{}, body io.ReadCloser) error {
 		return nil
 	}
 
-	bytes, err := ioutil.ReadAll(body)
+	bytes, err := io.ReadAll(body)
 	if err != nil {
 		return err
 	}
