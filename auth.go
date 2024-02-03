@@ -2,7 +2,8 @@ package esme
 
 import (
 	"encoding/base64"
-	"log"
+	"errors"
+	"log/slog"
 	"net/http"
 )
 
@@ -12,67 +13,66 @@ const (
 	CustomHeaderError             = "custom header(s) is invalid"
 )
 
-func checkAuthorization(r *http.Request, route *route) (string, int) {
+func checkAuthorization(r *http.Request, route *route) error {
 	for _, f := range getAuthCheckers() {
-		errStr, statusCode := f(r, route)
-		if errStr != "" {
-			return errStr, statusCode
+		err := f(r, route)
+		if err != nil {
+			slog.Error(err.Error())
+			return err
 		}
 	}
 
-	return "", 0
+	return nil
 }
 
-func getAuthCheckers() []func(r *http.Request, route *route) (string, int) {
-	return []func(r *http.Request, route *route) (string, int){
+func getAuthCheckers() []func(r *http.Request, route *route) error {
+	return []func(r *http.Request, route *route) error{
 		checkBasicAuth,
 		checkBearerTokenAuth,
 		checkCustomHeaders,
 	}
 }
 
-func checkCustomHeaders(r *http.Request, route *route) (string, int) {
+func checkCustomHeaders(r *http.Request, route *route) error {
 	if route.Auth.Custom != nil {
 		custom := route.Auth.Custom
+
 		for k, v := range custom {
 			headerVal := r.Header.Get(k)
 
 			if headerVal != v {
-				log.Println(CustomHeaderError)
-				return CustomHeaderError, http.StatusBadRequest
+				return errors.New(CustomHeaderError)
 			}
 		}
 	}
 
-	return "", 0
+	return nil
 }
 
-func checkBearerTokenAuth(r *http.Request, route *route) (string, int) {
+func checkBearerTokenAuth(r *http.Request, route *route) error {
 	header := r.Header.Get("Authorization")
 
 	if route.Auth.BearerToken != nil {
 		bearer := route.Auth.BearerToken
 		if header == "" || header != "Bearer "+bearer.Token {
-			log.Println(AuthorizationBearerTokenError)
-			return AuthorizationBearerTokenError, http.StatusUnauthorized
+			return errors.New(AuthorizationBearerTokenError)
 		}
 	}
 
-	return "", 0
+	return nil
 }
 
-func checkBasicAuth(r *http.Request, route *route) (string, int) {
+func checkBasicAuth(r *http.Request, route *route) error {
 	header := r.Header.Get("Authorization")
 
 	if route.Auth.Basic != nil {
 		basic := route.Auth.Basic
 		if header == "" || header != basicAuthHeaderValue(basic.Username, basic.Password) {
-			log.Println(AuthorizationBasicError)
-			return AuthorizationBasicError, http.StatusUnauthorized
+			return errors.New(AuthorizationBasicError)
 		}
 	}
 
-	return "", 0
+	return nil
 }
 
 func basicAuthHeaderValue(username, password string) string {

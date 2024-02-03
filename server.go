@@ -1,7 +1,8 @@
 package esme
 
 import (
-	"log"
+	"errors"
+	"log/slog"
 	"net/http"
 )
 
@@ -10,14 +11,16 @@ Serve method takes a port and route config file(s) as arguments.
 It is responsible for parsing the route config files(s), generate routes, set authentication and
 start the server at the specified port.
 */
-func Serve(port string, paths ...string) {
+func Serve(port string, paths ...string) error {
 	routeConfig, err := getRouteConfig(paths)
 	if err != nil {
-		log.Println(err.Error())
+		return err
 	}
 
 	setRoutes(routeConfig)
 	launchServer(port)
+
+	return nil
 }
 
 func launchServer(port string) {
@@ -27,10 +30,10 @@ func launchServer(port string) {
 	m.HandleFunc("/", handleAll)
 	m.HandleFunc("/shutdown", handleShutdown(port, &s))
 
-	log.Println("starting ESME server on port " + port)
+	slog.Info("starting ESME server", "port", port)
 
-	if err := s.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-		log.Println(err)
+	if err := s.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+		slog.Error("server error", "error", err)
 	}
 }
 
@@ -43,7 +46,7 @@ func setRoutes(configs []*config) {
 				endpoint.Auth = group.Auth
 				configMap[getRouteMapKey(endpoint.Method, endpoint.Url)] = endpoint
 
-				log.Printf("added route %s %s", endpoint.Method, endpoint.Url)
+				slog.Info("added route %s %s", endpoint.Method, endpoint.Url)
 			}
 		}
 	}
