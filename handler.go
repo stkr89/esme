@@ -27,6 +27,7 @@ func handleAll(w http.ResponseWriter, req *http.Request) {
 
 	if _, ok := routeConfigMap[getRouteMapKey(req.Method, req.URL.Path)]; !ok {
 		http.Error(w, "Not found", http.StatusNotFound)
+		return
 	}
 
 	r := routeConfigMap[getRouteMapKey(req.Method, req.URL.Path)]

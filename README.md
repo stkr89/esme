@@ -15,58 +15,45 @@ Here is a sample `route-config.json` file that can be processed by ESME
 
 ```json
 {
-  "routes": [
-    {
-      "url": "/users/1",
-      "method": "GET",
-      "status_code": 200,
-      "response": [
-        {
-          "firstName": "jane",
-          "lastName": "doe",
-          "id": 1
-        },
-        {
-          "firstName": "john",
-          "lastName": "doe",
-          "id": 2
-        }
-      ]
-    },
+  "route_groups": [
     {
       "auth": {
+        "basic": {
+          "username": "user1",
+          "password": "pass123"
+        },
         "bearer_token": {
-          "token": "token"
+          "token": "abc123xyz"
+        },
+        "custom": {
+          "custom_key": "custom_value"
         }
       },
       "endpoints": [
         {
-          "url": "/user",
+          "url": "https://api.example.com/v1/resource",
+          "method": "GET",
+          "status_code": 200,
+          "body": {
+            "key1": "value1",
+            "key2": "value2"
+          },
+          "response": {
+            "success": true,
+            "data": {
+              "item1": "details1",
+              "item2": "details2"
+            }
+          }
+        },
+        {
+          "url": "https://api.example.com/v1/submit",
           "method": "POST",
           "status_code": 201,
           "body": {
-            "firstName": "foo",
-            "lastName": "bar"
+            "submit_key": "submit_value"
           },
-          "response": {
-            "firstName": "foo",
-            "lastName": "bar"
-          }
-        }
-      ]
-    },
-    {
-      "auth": {
-        "custom": {
-          "my_header": "value"
-        }
-      },
-      "endpoints": [
-        {
-          "url": "/user/1",
-          "method": "DELETE",
-          "status_code": 200,
-          "response": "success"
+          "response": "Submission successful"
         }
       ]
     }
@@ -84,7 +71,7 @@ import (
 )
 
 func main() {
-	esme.Serve("8080", "./route-config.json")
+	esme.Serve("8080", "route-config.json")
 }
 ```
 
